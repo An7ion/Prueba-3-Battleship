@@ -1,62 +1,46 @@
+from funciones import *
 from random import randint
-import os
-import time
-tablero = []
 
-for a in range(3):
-    tablero.append(["O"] * 3)
+# Constantes del juego
+tamaño_tablero = 4
+turnos_maximos = 3
 
-def MostrarTablero(tablero):
-    print("  A B C ")
-    for i, fila in enumerate(tablero, start=1):
-        print(i, " ".join(fila))
+tablero = [["O"] * tamaño_tablero for _ in range(tamaño_tablero)]
+barco_numero = randint(0, tamaño_tablero - 1)
+barco_letra = randint(0, tamaño_tablero - 1)
 
-def letra_a_numero(letra):
-    return ord(letra.upper()) - ord('A')
-
-def numero_a_letra(numero):
-    return chr(numero + ord('A'))
-
-def random_numero(tablero):
-    return randint(0, len(tablero) - 1)
-
-def random_letra(tablero):
-    return randint(0, len(tablero[0]) - 1)
-
-barco_numero = random_numero(tablero)
-barco_letra = random_letra(tablero)
-
-print ("Bienvenido a ⚓​ Battleshippp ⚓")
+print("Bienvenido a ⚓​ Battleshippp ⚓\n")
 input("Presiona ENTER para continuar ")
 
-for turn in range(9):
-    os.system("cls")
-    print("Estas en el turno : ", turn + 1)
-    MostrarTablero(tablero)
-    letra = input("LETRA:")
-    numero = int(input("NUMERO:")) -1 # SIN EL MENOS 1 SELECCIONARA LA LINEA DE ABAJO DEL TABLERO
-    guess_col = letra_a_numero(letra)
+for turn in range(turnos_maximos):
+    limpiar_pantalla()
+    print("Estás en el turno:", turn + 1)
+    mostrar_tablero(tablero)
 
-    if numero == barco_numero and guess_col == barco_letra:
-        print("Felicidades! has destruido mi barco!")
+    letra = input("LETRA: ")
+    while not validar_letra(letra):
+        print("Entrada no válida. Introduce una letra válida (A, B, C, D).")
+        letra = input("LETRA: ")
+
+    numero = int(input("NUMERO: ")) - 1
+    while not validar_numero(numero + 1, tamaño_tablero):
+        print("Entrada no válida. Introduce un número válido (1, 2, 3, 4).")
+        numero = int(input("NUMERO: ")) - 1
+
+    barcoenemigo = letra_a_numero(letra)
+
+    animacion_seleccion()
+    animacion_disparo()
+
+    if numero == barco_numero and barcoenemigo == barco_letra:
+        print("¡Felicidades! ¡Has destruido mi barco!")
         input()
-
         break
     else:
-        if (numero < 0 or numero > 5) or (guess_col < 0 or guess_col > 5):
-            print("Eso ni siquiera esta en el tablero 🎲.")
-        elif(tablero[numero][guess_col] == "X"):
-            print("You guessed that one already.")
-        else:
-            print("has fallado!")
-            tablero[numero][guess_col] = "X"
-            input()
-            os.system("cls")
-    if turn == 8:
-        print("Game Over")
+        print("¡Has fallado!")
+        tablero[numero][barcoenemigo] = "X"
+        input()
 
-
-
-
-
-###hola
+    if turn == turnos_maximos - 1:
+        input("Juego terminado. No has destruido mi barco.")
+    limpiar_pantalla()
