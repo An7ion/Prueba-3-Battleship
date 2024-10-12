@@ -1,1 +1,1 @@
-Proyecto creado para la asignatura de Funciones y Matrices el cual recrea el juego Battleship
+Battleshipes un juego de batallas navales en Python, diseñado para la asignatura de Funciones y Matrices. Los jugadores tienen 3 turnos para adivinar la ubicación de un barco oculto en un tablero de 4x4, con animaciones que hacen la experiencia más dinámica. El proyecto incluye validaciones de entrada y proporciona una forma divertida de aplicar conceptos de programación y matrices.
